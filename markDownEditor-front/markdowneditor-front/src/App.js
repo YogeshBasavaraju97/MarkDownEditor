@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
-
 import './App.css';
 
 const App = () => {
   const [markdown, setMarkdown] = useState('');
   const [htmlPreview, setHtmlPreview] = useState('');
 
+  //rerenders the app component for every change in markdown
   useEffect(() => {}, [markdown]);
 
+  //function to fetch the html from the server
   const handleInputChange = async (e) => {
     const markdownText = e.target.value;
     setMarkdown(markdownText);
@@ -17,8 +18,8 @@ const App = () => {
         headers: { 'content-Type': 'application/json' },
         body: JSON.stringify({ markdown: markdownText }),
       });
-      if (response.ok) {
-        console.log('successful');
+      if (!response.ok) {
+        console.log('fetching data was unsuccessful');
       }
       const data = await response.json();
       setHtmlPreview(data.html);
